@@ -64,6 +64,14 @@ module Macinbox
           Task.run %W[ VBoxManage setextradata macinbox CustomVideoMode1 1280x800x32 ] + [task_opts]
           Task.run %W[ VBoxManage setextradata macinbox VBoxInternal2/EfiGraphicsResolution 1280x800 ] + [task_opts]
           Task.run %W[ VBoxManage setextradata macinbox GUI/ScaleFactor 2.0 ] + [task_opts] if @hidpi
+
+          Task.run %W[ VBoxManage modifyvm macinbox --cpuidset 00000001 000306a9 04100800 7fbae3ff bfebfbff ] + [task_opts]
+          Task.run %W[ VBoxManage setextradata macinbox VBoxInternal/Devices/efi/0/Config/DmiSystemProduct MacBookPro11,3 ] + [task_opts]
+          Task.run %W[ VBoxManage setextradata macinbox VBoxInternal/Devices/efi/0/Config/DmiSystemVersion 1.0 ] + [task_opts]
+          Task.run %W[ VBoxManage setextradata macinbox VBoxInternal/Devices/efi/0/Config/DmiBoardProduct Mac-2BD1B31983FE1663 ] + [task_opts]
+          Task.run %W[ VBoxManage setextradata macinbox VBoxInternal/Devices/smc/0/Config/DeviceKey ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc ] + [task_opts]
+          Task.run %W[ VBoxManage setextradata macinbox VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC 1 ] + [task_opts]
+
           Task.run %W[ VBoxManage storagectl macinbox --name #{"SATA Controller"} --add sata --controller IntelAHCI --hostiocache on ] + [task_opts]
           Task.run %W[ VBoxManage storageattach macinbox --storagectl #{"SATA Controller"} --port 0 --device 0 --type hdd --nonrotational on --medium #{@input_vdi} ] + [task_opts]
           Task.run %W[ VBoxManage modifyvm macinbox --boot1 disk ] + [task_opts]
